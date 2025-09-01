@@ -1,0 +1,20 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1756709945641,
+      "tag": "0000_neat_synch",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1756713027124,
+      "tag": "0001_melted_colleen_wing",
+      "breakpoints": true
+    }
+  ]
+}
