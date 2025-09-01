@@ -20,7 +20,7 @@ export const { handlers: {GET,POST}, auth, signOut, signIn } = NextAuth({
     ],
     callbacks: {
         async session({session, user} : any) {
-            console.log("Session callback", { session, user });
+            //console.log("Session callback", { session, user });
             if(session && user) {
                 session.user.id = user.id;
             }
