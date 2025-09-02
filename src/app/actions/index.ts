@@ -1,5 +1,5 @@
-export {createComments} from "./create-comment"
-export {createPosts} from "./create-post"
+export {createComment} from "./create-comment"
+export { default as createPosts } from "./create-post"
 export {createTopic} from "./create-topic"
 export {SignIn} from "./sign-in"
 export {SignOut} from "./sign-out" 

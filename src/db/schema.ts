@@ -1,11 +1,6 @@
 import { sql } from "drizzle-orm";
 import { sqliteTable, text, integer,primaryKey,uniqueIndex,foreignKey } from "drizzle-orm/sqlite-core";
- 
-// export const users = sqliteTable("users", {
-//   id: integer("id").primaryKey({ autoIncrement: true }),
-//   name: text("name").notNull(),
-//   email: text("email").notNull().unique(),
-// });
+import { relations } from "drizzle-orm";
  
 export const snippet = sqliteTable("snippet",{
   id: integer("id").primaryKey({ autoIncrement: true }),
@@ -135,3 +130,65 @@ export const comments:any = sqliteTable("Comment", {
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
 });
+ 
+ 
+// ------------------ Relations ------------------
+ 
+// Users
+export const usersRelations = relations(users, ({ many }) => ({
+  posts: many(posts),
+  comments: many(comments),
+  accounts: many(account),
+  sessions: many(sessions),
+}));
+ 
+// Accounts
+export const accountRelations = relations(account, ({ one }) => ({
+  user: one(users, {
+    fields: [account.userId],
+    references: [users.id],
+  }),
+}));
+ 
+// Sessions
+export const sessionsRelations = relations(sessions, ({ one }) => ({
+  user: one(users, {
+    fields: [sessions.userId],
+    references: [users.id],
+  }),
+}));
+ 
+// Topics
+export const topicsRelations = relations(topics, ({ many }) => ({
+  posts: many(posts),
+}));
+ 
+// Posts
+export const postsRelations = relations(posts, ({ one, many }) => ({
+  user: one(users, {
+    fields: [posts.userId],
+    references: [users.id],
+  }),
+  topic: one(topics, {
+    fields: [posts.topicId],
+    references: [topics.id],
+  }),
+  comments: many(comments),
+}));
+ 
+// Comments
+export const commentsRelations = relations(comments, ({ one, many }) => ({
+  post: one(posts, {
+    fields: [comments.postId],
+    references: [posts.id],
+  }),
+  user: one(users, {
+    fields: [comments.userId],
+    references: [users.id],
+  }),
+  parent: one(comments, {
+    fields: [comments.parentId],
+    references: [comments.id],
+  }),
+  replies: many(comments), // self-join for nested replies
+}));
