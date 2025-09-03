@@ -1,17 +1,25 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+---
+
+## 🔥 Features
+
+* **Topic-Based Discussion**: Create and manage **topics** to organize discussions.
+* **Posts Within Topics**: Each topic can have multiple **posts**, allowing users to start and contribute to conversations around specific subjects.
+* **Home Page Overview**: The home screen displays a list of **all available topics**. Clicking on a topic navigates to its dedicated page with all associated posts.
+* **Post Detail View**: Users can click on a post to view its **detailed page**, including the full content, comments, and replies.
+* **Commenting System**: Supports **nested comments** — users can comment on posts and **reply to existing comments**, enabling threaded discussions.
+* **Search Functionality**: Powerful **search filter** to find posts by **title, content, or topic**. Accessible directly from the home screen.
+* **Top Posts Highlighted**: The home screen features the **top posts** across all topics, based on comment count — giving visibility to trending discussions.
+
+---
+
 ## Getting Started
 
 First, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
