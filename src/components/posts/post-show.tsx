@@ -9,6 +9,8 @@ interface PostShowProps {
 
 export default async function PostShow({postId}: PostShowProps) {
 
+  
+
   const postsResult = await db.select().from(posts).where(eq(posts.id, postId))
   const post = postsResult[0];
 

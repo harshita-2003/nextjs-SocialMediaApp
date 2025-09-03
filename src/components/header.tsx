@@ -3,6 +3,8 @@ import {
 } from '@nextui-org/react'
 import Link from 'next/link';
 import HeaderAuth from './header-auth';
+import SearchInput from './search-input';
+import { Suspense } from 'react';
 
 export default async function Header() {
 
@@ -14,7 +16,10 @@ export default async function Header() {
 
             <NavbarContent justify='center'>
                 <NavbarItem>
-                    <Input />
+                    {/* allows to render this on server everything else in file on client */}
+                    <Suspense fallback={<div>loading</div>}>
+                        <SearchInput />
+                    </Suspense>
                 </NavbarItem>
             </NavbarContent>
             <NavbarContent justify='end'>

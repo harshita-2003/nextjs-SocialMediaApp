@@ -17,7 +17,7 @@ export default function CommentShow({ commentId, comments }: CommentShowProps) {
     return null;
   }
 
-  const children = comments.filter((c) => c.parentId === commentId);
+  const children = comments.filter((c) => c.parentId === commentId); // children comment
   const renderedChildren = children.map((child) => {
     return (
       <CommentShow key={child.id} commentId={child.id} comments={comments} />
