@@ -21,7 +21,6 @@ export default async function SearchPage({searchParams} : SearchPageProps) {
 
     return (
         <div>
-            {term}
             <PostList fetchData={() => fetchPostsBySearchTerm(term)} />
         </div>
     )

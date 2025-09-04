@@ -1,17 +1,12 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { z } from "zod";
 import { auth } from "@/auth";
 import { db } from "@/db";
 import paths from "@/paths";
-import { comments, posts, topics } from "@/db/schema";
-import { eq } from "drizzle-orm";
-
-// Zod schema for comment content validation
-const createCommentSchema = z.object({
-  content: z.string().min(3),
-});
+import { comments } from "@/db/schema";
+import * as yup from "yup"
+import { createCommentSchema } from "@/schemas/createCommentSchema";
 
 // Type for form state
 interface CreateCommentFormState {
@@ -28,49 +23,63 @@ export async function createComment(
   formState: CreateCommentFormState,
   formData: FormData
 ): Promise<CreateCommentFormState> {
-  // Validate comment content
-  const result = createCommentSchema.safeParse({
-    content: formData.get("content"),
-  });
 
-  if (!result.success) {
-    return {
-      errors: result.error.flatten().fieldErrors,
-    };
-  }
-
-  // Check authentication
-  const session = await auth();
-  if (!session || !session.user || !session.user.id) {
-    return {
-      errors: {
-        _form: ["You must sign in to do this."],
-      },
-    };
-  }
-
-  // Insert the comment into the database
   try {
+    // Validate comment content
+    const validateData = await createCommentSchema.validate({
+      content: formData.get("content"),
+    });
+
+    // Check authentication
+    const session = await auth();
+    if (!session || !session.user || !session.user.id) {
+      return {
+        errors: {
+          _form: ["You must sign in to do this."],
+        },
+      };
+    }
+
+    // Insert the comment into the database
     await db.insert(comments).values({
-      content: result.data.content,
+      content: validateData.content,
       postId,
       parentId,
       userId: session.user.id,
     });
+
   } catch (err) {
+    //catches any yup validation error
+    if(err instanceof yup.ValidationError) {
+      const errors : CreateCommentFormState['errors'] = {};
+
+      err.inner.forEach((error) => {
+          if(error.path) {
+              const path = error.path as keyof typeof errors
+              if(!errors[path]){
+                  errors[path] = []
+              }
+              errors[path]?.push(error.message)
+          }
+      })
+      return {errors};
+    }    
+
+    //any general issue like db operation fail
     if (err instanceof Error) {
       return {
         errors: {
           _form: [err.message],
         },
       };
-    } else {
-      return {
-        errors: {
-          _form: ["Something went wrong..."],
-        },
-      };
-    }
+    } 
+
+    return {
+      errors: {
+        _form: ["Something went wrong..."],
+      },
+    };
+    
   }
 
   // Step 1: Find the post to get its topicId
