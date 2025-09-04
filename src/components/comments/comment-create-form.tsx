@@ -26,7 +26,9 @@ export default function CommentCreateForm({
   startOpen,
 }: CommentCreateFormProps) {
   const [open, setOpen] = useState(startOpen);
+  const [length, setLength] = useState(0);
   const ref = useRef<HTMLFormElement | null>(null);
+  
   const [formState, action, isPending] = useActionState<
     CreateCommentFormState,
     FormData
@@ -53,6 +55,7 @@ export default function CommentCreateForm({
           placeholder="Enter your comment"
           isInvalid={!!formState.errors.content}
           errorMessage={formState.errors.content?.join(", ")}
+          onChange={(e) => setLength(e.target.value.length)}
         />
 
         {formState.errors._form ? (
@@ -60,8 +63,11 @@ export default function CommentCreateForm({
             {formState.errors._form?.join(", ")}
           </div>
         ) : null}
-
-        <FormButton isLoading={isPending}>Create Comment</FormButton>
+        <div className="flex flex-row justify-between align-center">
+          <FormButton isLoading={isPending}>Create Comment</FormButton>
+          <p className="text-gray-500">Characters left: {200-length}</p>
+        </div>
+        
       </div>
     </form>
   );

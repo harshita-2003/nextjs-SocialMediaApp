@@ -18,20 +18,41 @@ export default async function PostShowPage({ params }: PostShowPageProps) {
   const { slug, postId } = await params;
 
   return (
-    <div className="space-y-3">
-      <Link className="underline decoration-solid" href={paths.topicShow(slug)}>
-        {"< "}Back to {slug}
-      </Link>
+    <main className="max-w-6xl mx-auto px-4 py-8 space-y-8">
+      {/* Back to Topic Link */}
+      <div>
+        <Link
+          href={paths.topicShow(slug)}
+          className="text-sm text-blue-600 hover:text-blue-800 transition-colors"
+        >
+          &larr; Back to <span className="font-medium">{slug}</span>
+        </Link>
+      </div>
 
-      <Suspense fallback={<PostShowLoading />}>
-        <PostShow postId={postId} />
-      </Suspense>
-      
+      {/* Post Content */}
+      <section className="bg-white rounded-lg shadow-md p-6">
+        <Suspense fallback={<PostShowLoading />}>
+          <PostShow postId={postId} />
+        </Suspense>
+      </section>
 
-      <CommentCreateForm postId={postId} startOpen />
+      {/* Comment Form */}
+      <section className="bg-gray-50 rounded-lg shadow-sm p-6">
+        <h2 className="text-lg font-semibold text-gray-800 mb-4">
+          Add a Comment
+        </h2>
+        <CommentCreateForm postId={postId} startOpen />
+      </section>
 
-
-      <CommentList fetchData={() => fetchCommentsByPostId(postId)}/>
-    </div>
+      {/* Comments List */}
+      <section>
+        <h2 className="text-lg font-semibold text-gray-800 mb-4">
+          Comments
+        </h2>
+        <div className="space-y-4">
+          <CommentList fetchData={() => fetchCommentsByPostId(postId)} />
+        </div>
+      </section>
+    </main>
   );
 }
