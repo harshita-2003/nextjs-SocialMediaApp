@@ -1,5 +1,5 @@
 import {
-    Navbar, NavbarBrand, NavbarContent, NavbarItem, Input
+    Navbar, NavbarBrand, NavbarContent, NavbarItem
 } from '@nextui-org/react'
 import Link from 'next/link';
 import HeaderAuth from './header-auth';
