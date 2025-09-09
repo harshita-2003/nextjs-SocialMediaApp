@@ -1,5 +1,4 @@
 import { Skeleton } from "@nextui-org/react";
-import { div } from "framer-motion/client";
 
 export default function PostShowLoading() {
     return (

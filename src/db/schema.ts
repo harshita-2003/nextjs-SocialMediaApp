@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { sqliteTable, text, integer,primaryKey,uniqueIndex,foreignKey } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text, integer,primaryKey,foreignKey } from "drizzle-orm/sqlite-core";
 import { relations } from "drizzle-orm";
  
 export const snippet = sqliteTable("snippet",{
@@ -111,6 +111,7 @@ export const posts = sqliteTable("Post", {
 });
  
 // ------------------ Comment ------------------
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const comments:any = sqliteTable("Comment", {
   id: text("id")
     .primaryKey()

@@ -7,13 +7,13 @@ import { redirect } from "next/navigation";
 
 interface SearchPageProps {
     searchParams : {
-        term: string;
+        term?: string;
     }
 }
 
 export default async function SearchPage({searchParams} : SearchPageProps) {
 
-    const { term } = await searchParams;
+    const term = searchParams.term;
 
     if(!term) {
         redirect('/')
